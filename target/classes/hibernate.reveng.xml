@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+    <schema-selection match-catalog="coconut_craft_db" match-schema="dbo"/>
+    <table-filter match-name="Product"/>
+    <table-filter match-name="Category"/>
+    <table-filter match-name="Account"/>
+    <table-filter match-name="Discount"/>
+    <table-filter match-name="PurchasesOrder"/>
+    <table-filter match-name="SalesOrder"/>
+    <table-filter match-name="Supplier"/>
+    <table-filter match-name="Notify"/>
+    <table-filter match-name="SalesOrderDetail"/>
+    <table-filter match-name="SalesOrderItem"/>
+
+</hibernate-reverse-engineering>
