@@ -30,5 +30,6 @@
         <mapping class="com.team5solution.Entities.Notify"/>
         <mapping class="com.team5solution.Entities.SalesOrderDetail"/>
         <mapping class="com.team5solution.Entities.SalesOrderItem"/>
+        <mapping class="com.team5solution.Entities.Comment"/>
     </session-factory>
 </hibernate-configuration>

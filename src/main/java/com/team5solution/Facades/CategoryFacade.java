@@ -55,6 +55,7 @@ public class CategoryFacade extends AbstractFacade implements Serializable {
                 criteria.createAlias("products", "categoryId", JoinType.LEFT_OUTER_JOIN);
                 criteria.setFetchMode("products", FetchMode.JOIN);
                 criteria.add(Restrictions.eq("categoryId", id));
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
                 list = (Category) criteria.uniqueResult();
             }
         } catch (Exception ex) {
@@ -65,6 +66,27 @@ public class CategoryFacade extends AbstractFacade implements Serializable {
         return list;
     }
 
+    @Override
+    public Category find(String id) {
+        Session session = null;
+        Category category = null;
+        try {
+            session = HibernateAction.getInstance().openSession();
+            if (session != null) {
+                Criteria criteria = session.createCriteria(Category.class);
+                criteria.createAlias("products", "products", JoinType.LEFT_OUTER_JOIN);
+                criteria.setFetchMode("products", FetchMode.JOIN);
+                criteria.add(Restrictions.eq("categoryId", id));
+                category = (Category) criteria.uniqueResult();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            HibernateAction.getInstance().closeSession(session);
+        }
+        return category;
+    }
+
 
     public List available() {
         Session session = null;
@@ -73,7 +95,11 @@ public class CategoryFacade extends AbstractFacade implements Serializable {
             session = HibernateAction.getInstance().openSession();
             if (session != null) {
                 Criteria criteria = session.createCriteria(Category.class);
+                criteria.createAlias("products", "categoryId", JoinType.LEFT_OUTER_JOIN);
+                criteria.setFetchMode("products", FetchMode.JOIN);
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
                 criteria.add(Restrictions.eq("active", true));
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
                 list = criteria.list();
             }
         } catch (Exception ex) {

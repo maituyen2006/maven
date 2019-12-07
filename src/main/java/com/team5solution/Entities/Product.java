@@ -31,48 +31,21 @@ public class Product {
     private Integer itemInStock;
     private Boolean warehouseStatus;
     private Boolean shopStatus;
-    private String comment;
     private Boolean productStatus;
     private String color;
     private String imageDetail;
     private Category categoryId;
-//    private Comment comments;
-    
-    
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ProductId")
-//    public Comment getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(Comment comments) {
-//        this.comments = comments;
-//    }
-//    
-//    
-    
-    
-//    private SalesOrder orderId;
+    private List<Comment> comments;
 
-//    private List<SalesOrderItem> items;
-//
-//
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productId")
-//    public List<SalesOrderItem> getItems() {
-//        return items;
-//    }
-//
-//    public void setItems(List<SalesOrderItem> items) {
-//        this.items = items;
-//    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @JsonManagedReference
+    public List<Comment> getComments() {
+        return comments;
+    }
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    public SalesOrder getOrderId() {
-//        return orderId;
-//    }
-//
-//    public void setOrderId(SalesOrder orderId) {
-//        this.orderId = orderId;
-//    }
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CategoryId", referencedColumnName = "CategoryId")
@@ -223,14 +196,6 @@ public class Product {
         this.shopStatus = shopStatus;
     }
 
-    @Column(name = "comment", nullable = true, length = 500)
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 
 
     @Column(name = "ImageDetail", nullable = true, length = 500)
@@ -282,13 +247,12 @@ public class Product {
                 Objects.equals(itemInStock, product.itemInStock) &&
                 Objects.equals(warehouseStatus, product.warehouseStatus) &&
                 Objects.equals(shopStatus, product.shopStatus) &&
-                Objects.equals(comment, product.comment) &&
                 Objects.equals(productStatus, product.productStatus) &&
                 Objects.equals(imageDetail, product.imageDetail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, createdBy, createdOn, name, brand, image, size, material, origin, price, description, itemOnEquipment, itemInStock, warehouseStatus, shopStatus, comment, productStatus, imageDetail);
+        return Objects.hash(productId, createdBy, createdOn, name, brand, image, size, material, origin, price, description, itemOnEquipment, itemInStock, warehouseStatus, shopStatus, productStatus, imageDetail);
     }
 }

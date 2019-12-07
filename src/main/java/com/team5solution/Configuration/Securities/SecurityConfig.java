@@ -44,9 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/Public/**").permitAll()
                 .antMatchers("/Product/List/**").permitAll()
+                .antMatchers("/Product/Comment/**").permitAll()
                 .antMatchers("/Account/List/**").permitAll()
                 .antMatchers("/Category/List/**").permitAll()
                 .antMatchers("/SO/List/**").permitAll()
+                .antMatchers("/Supplier/List/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/Auth").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -59,24 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/").permitAll();
     }
 
-
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("*"));
-//        configuration.setAllowedMethods(Arrays.asList("*"));
-//        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-//        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
-
-//        @Bean
-//    @Override
-//    public AuthenticationManager authenticationManager() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
 
     @Bean
     @Override

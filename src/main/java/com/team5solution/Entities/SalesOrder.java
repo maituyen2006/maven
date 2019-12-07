@@ -1,5 +1,6 @@
 package com.team5solution.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
@@ -60,6 +61,7 @@ public class SalesOrder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Account_Id")
+    @JsonBackReference
     public Account getAccountId() {
         return accountId;
     }

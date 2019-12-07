@@ -35,8 +35,8 @@ public class AccountController {
         ResponseApi api = new ResponseApi();
         Account account;
         try {
-            account = (Account) new AccountFacade().find(id);
-            api.setMessage("Post object successful!");
+            account = new AccountFacade().getAccountById(id);
+            api.setMessage("Get object successful!");
             api.setSuccess(Boolean.TRUE);
             api.setCode(1);
             api.setData(account);
@@ -46,13 +46,13 @@ public class AccountController {
         return api;
     }
 
-    @GetMapping(value = "/Json/{id}")
+    @GetMapping(value = "Json/{id}")
     public ResponseApi GetCartJson(@PathVariable(name = "id") String id) {
         ResponseApi api = new ResponseApi();
-        Account account;
+        String account;
         try {
             account = new AccountFacade().getAccountCartJsonById(id);
-            api.setMessage("Post object successful!");
+            api.setMessage("Get cart json successful!");
             api.setSuccess(Boolean.TRUE);
             api.setCode(1);
             api.setData(account);

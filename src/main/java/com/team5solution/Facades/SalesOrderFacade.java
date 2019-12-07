@@ -5,6 +5,8 @@ import com.team5solution.Entities.SalesOrder;
 import com.team5solution.Entities.SalesOrderItem;
 import com.zaxxer.hikari.HikariDataSource;
 import org.hibernate.*;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;

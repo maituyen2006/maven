@@ -11,10 +11,11 @@ public class Notify {
     private String notifyId;
     private String status;
 
+
     @Id
     @GeneratedValue(generator = "generator")
     @GenericGenerator(name = "generator", strategy = "guid")
-    @Column(name = "Notify_Id", nullable = false)
+    @Column(name = "NotifyId", nullable = false)
     public String getNotifyId() {
         return notifyId;
     }

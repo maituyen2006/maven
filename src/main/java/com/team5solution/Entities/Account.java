@@ -1,9 +1,11 @@
 package com.team5solution.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +34,18 @@ public class Account {
     private Boolean isDeleted;
     private String cartJson;
 
+    private List<Comment> comments;
+
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Column(name = "CartJson")
     public String getCartJson() {
         return cartJson;
@@ -55,6 +69,7 @@ public class Account {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "accountId")
+    @JsonManagedReference
     public List<SalesOrder> getOrders() {
         return orders;
     }
@@ -110,7 +125,7 @@ public class Account {
         this.password = password;
     }
 
-    @Basic
+    @Temporal(value = TemporalType.DATE)
     @Column(name = "CreatedOn", nullable = true)
     public Date getCreatedOn() {
         return createdOn;

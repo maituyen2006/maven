@@ -23,12 +23,10 @@ public class Category {
     private String createdBy;
     private String name;
     private Boolean isActive;
-
     private List<Product> products;
 
-    @JsonBackReference
     @JoinColumn(name = "categoryId", columnDefinition = "categoryId")
-    @JsonIgnoreProperties("categoryId")
+    @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER)
     public List<Product> getProducts() {
         return products;

@@ -1,16 +1,16 @@
 package com.team5solution.Facades;
 
 import com.team5solution.Entities.Account;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import com.zaxxer.hikari.HikariDataSource;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 @Repository
 @Transactional
@@ -18,6 +18,28 @@ public class AccountFacade extends AbstractFacade implements Serializable {
 
     public AccountFacade() {
         super(Account.class);
+    }
+
+
+    @Override
+    public List list() {
+        Session session = null;
+        List list = null;
+        try {
+            session = HibernateAction.getInstance().openSession();
+            if (session != null) {
+                Criteria criteria = session.createCriteria(Account.class);
+                criteria.createAlias("orders", "orders", JoinType.LEFT_OUTER_JOIN);
+                criteria.setFetchMode("orders", FetchMode.JOIN);
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+                list = criteria.list();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            HibernateAction.getInstance().closeSession(session);
+        }
+        return list;
     }
 
     public List active() {
@@ -29,6 +51,7 @@ public class AccountFacade extends AbstractFacade implements Serializable {
                 Criteria criteria = session.createCriteria(Account.class);
                 criteria.add(Restrictions.eq("deleted", false));
                 criteria.add(Restrictions.eq("active", true));
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
                 list = criteria.list();
             }
         } catch (Exception ex) {
@@ -37,6 +60,27 @@ public class AccountFacade extends AbstractFacade implements Serializable {
             HibernateAction.getInstance().closeSession(session);
         }
         return list;
+    }
+
+    public Account getAccountById(String id) {
+        Session session = null;
+        Account account = null;
+        try {
+            session = HibernateAction.getInstance().openSession();
+            if (session != null) {
+                Criteria criteria = session.createCriteria(Account.class);
+                criteria.createAlias("orders", "orders", JoinType.LEFT_OUTER_JOIN);
+                criteria.setFetchMode("orders", FetchMode.JOIN);
+                criteria.add(Restrictions.eq("accountId", id));
+                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+                account = (Account) criteria.uniqueResult();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            HibernateAction.getInstance().closeSession(session);
+        }
+        return account;
     }
 
     public Account getByUsername(String username) {
@@ -66,6 +110,7 @@ public class AccountFacade extends AbstractFacade implements Serializable {
             if (session != null) {
                 String hql = "From Account A where A.accountId=:id";
                 Query query = session.createQuery(hql).setParameter("id", id);
+
                 obj = (Account) query.uniqueResult();
             }
         } catch (Exception ex) {
@@ -103,16 +148,16 @@ public class AccountFacade extends AbstractFacade implements Serializable {
         return account1;
     }
 
-    public Account getAccountCartJsonById(String id) {
+    public String getAccountCartJsonById(String id) {
         Session session = null;
-        Account account = null;
+        String account = null;
         try {
             session = HibernateAction.getInstance().openSession();
             if (session != null) {
                 String hql = "select A.cartJson From Account A where A.accountId=:id";
                 Query query = session.createQuery(hql);
                 query.setParameter("id", id);
-                account = (Account) query.uniqueResult();
+                account = (String) query.uniqueResult();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
